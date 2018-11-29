@@ -1,5 +1,6 @@
-const expect                 = require('chai').expect;
-const groupAppointmentByHour = require('../lib/dimensionCalculator').groupAppointmentByHour;
+const forEach             = require('lodash').forEach;
+const expect              = require('chai').expect;
+const DimensionCalculator = require('../lib/dimensionCalculator');
 
 describe('Dimension Calculator', () => {
   let appointments;
@@ -24,16 +25,35 @@ describe('Dimension Calculator', () => {
 
     });
     it('should return object with events grouped by slots they are occuring in', () => {
-      const dayObject = groupAppointmentByHour(appointments);
-      const hour = '9';
+      const dayObject = DimensionCalculator.groupAppointmentByHour(appointments);
+      const hour      = '9';
       // There are 3 appointments in 9am to 10am slot
       expect(dayObject[hour]).to.not.equal(undefined)
       expect(dayObject[hour].length).to.equal(2);
     });
   });
 
-  describe('setWidthForEachNode()', () => {
+  describe('setHeightForEachNode', () => {
+    it('should set height of each appointment object', () => {
+      DimensionCalculator.setHeightForEachNode(appointments);
+      forEach(appointments, (appointment) => {
+        expect(typeof(appointment.height)).to.not.equal('undefined');
+        expect(appointment.height).to.equal(appointment.endTime - appointment.startTime);
+      });
+    });
+  });
 
+  describe('setWidthForEachNode()', () => {
+    it('should set width of each appointment object', () => {
+      const dayObject = DimensionCalculator.groupAppointmentByHour(appointments);
+      DimensionCalculator.setWidthForEachNode(dayObject);
+      forEach(appointments, (appointment) => {
+        expect(typeof(appointment.width)).to.not.equal('undefined');
+      });
+      forEach(dayObject['9'], (appointment) => {
+        expect(appointment.width).to.be.equal(50);
+      });
+    });
   });
 
   describe('setHeightForEachNode()', () => {

@@ -1,36 +1,70 @@
+import forEach from 'lodash/forEach';
+import forOwn from 'lodash/forOwn';
 
-//
-// export function getDayObjectToPaint() {
-//   let appointmentNodes = [{ startTime: 9, endTime: 10}];
-//   const appointsByHour = groupAppointmentByHour();
-//   const sortedAppointsByHour = sortHoursByAppointmentOccurence();
-//   setWidthForEachNode(appointmentNodes, sortedAppointsByHour);
-//   setHeightForEachNode(appointmentNodes);
-//   return appointmentNodes;
-// }
 
+export function getDayObjectToPaint() {
+}
+
+/**
+ * Reduces array of appointments into an object with keys representing hour of the day
+ * and values representing array of appointments starting or ending in that hour
+ *
+ * @param appointments
+ * @returns {*}
+ */
 function groupAppointmentByHour(appointments) {
   const groupedAppointments = appointments.reduce((grouped, appointment) => {
-    const hour = Math.floor(appointment.startTime / 60) + '';
-    if (grouped[hour]) {
-      grouped[hour].push(appointment);
+    const startHour = Math.floor(appointment.startTime / 60) + '';
+    const endHour = Math.floor(appointment.endTime / 60) + '';
+    if (grouped[startHour]) {
+      grouped[startHour].push(appointment);
     } else {
-      grouped[hour] = [appointment]
+      grouped[startHour] = [appointment]
+    }
+    if (grouped[endHour]) {
+      grouped[endHour].push(appointment);
+    } else {
+      grouped[endHour] = [appointment]
     }
     return grouped;
-  }, {})
+  }, {});
   return groupedAppointments;
 }
 
-function setWidthForEachNode(appointments) {
-  // appointments.forEach((appointmentsArray) => {
-  //   const width = Math.round(100 / appointmentsArray.length,);
-  //   if (!appointmentNodes.width) {
-  //     appointmentNodes.width = width;
-  //   }
-  // });
+/**
+ * Sets height for each appointment node in dayObject.
+ * This function has side effects since it modifies the value of dayObject. It doesn't return a value following CQ-Separation.
+ * It is intentional since we don't want multiple instances of appointment node object
+ *
+ * @param appointments
+ */
+function setHeightForEachNode(appointments) {
+  forEach(appointments, (value) => {
+    value.height = value.endTime - value.startTime;
+  });
+}
+
+/**
+ * Sets the width attribute for each appointment node in dayObject.
+ * This function has side effects since it modifies the value of dayObject. It doesn't return a value following CQ-Separation.
+ * It is intentional as we don't want to have multiple instances of appointment node objects.
+ *
+ * @param dayObject
+ */
+function setWidthForEachNode(dayObject) {
+  forOwn(dayObject, (appointmentsArray, key) => {
+    const width = Math.round(100 / appointmentsArray.length,);
+    forEach(appointmentsArray, (appointmentNode) => {
+      // Set width if width is not already set or the current width of element is bigger than the new width
+      if (typeof(appointmentNode.width) === 'undefined' || appointmentNode.width > width) {
+        appointmentNode.width = width;
+      }
+    })
+  });
 }
 
 module.exports = {
-  groupAppointmentByHour
+  groupAppointmentByHour,
+  setHeightForEachNode,
+  setWidthForEachNode
 };
