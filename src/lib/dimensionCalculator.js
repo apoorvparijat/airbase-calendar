@@ -16,16 +16,14 @@ function groupAppointmentByHour(appointments) {
   const groupedAppointments = appointments.reduce((grouped, appointment) => {
     const startHour = Math.floor(appointment.startTime / 60) + '';
     const endHour = Math.floor(appointment.endTime / 60) + '';
-    if (grouped[startHour]) {
-      grouped[startHour].push(appointment);
-    } else {
-      grouped[startHour] = [appointment]
+    if (!grouped[startHour]) {
+      grouped[startHour] = { appointments: [] }
     }
-    if (grouped[endHour]) {
-      grouped[endHour].push(appointment);
-    } else {
-      grouped[endHour] = [appointment]
+    if (!grouped[endHour]) {
+      grouped[endHour] = { appointments: []}
     }
+    grouped[startHour].appointments.push(appointment);
+    grouped[endHour].appointments.push(appointment);
     return grouped;
   }, {});
   return groupedAppointments;
@@ -52,14 +50,14 @@ function setHeightForEachNode(appointments) {
  * @param dayObject
  */
 function setWidthForEachNode(dayObject) {
-  forOwn(dayObject, (appointmentsArray, key) => {
+  const keys = Object.keys(dayObject);
+  const sortedKeysBasedOnAppointments = keys.sort((a, b) => {
+    return dayObject[a].length - dayObject[b].length
+  });
+  forEach(sortedKeysBasedOnAppointments, (slotHour, key) => {
+    const appointmentsArray = dayObject[slotHour].appointments;
     const width = Math.round(100 / appointmentsArray.length,);
-    forEach(appointmentsArray, (appointmentNode) => {
-      // Set width if width is not already set or the current width of element is bigger than the new width
-      if (typeof(appointmentNode.width) === 'undefined' || appointmentNode.width > width) {
-        appointmentNode.width = width;
-      }
-    })
+    dayObject[slotHour].appointmentWidth = width;
   });
 }
 

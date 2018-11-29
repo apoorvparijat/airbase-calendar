@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
+import Loadable from 'react-loadable';
+import styled from 'styled-components';
+
 import logo from './logo.svg';
 import './App.css';
+
+const LoadableCalendar = Loadable({
+                                    loading: () => (<p>Loading...</p>),
+                                    loader : () => import('./Calendar/Calendar' /* webpackChunkName: "Calendar" */)
+                                  });
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  header {
+    margin-top: 1em;
+  }
+`;
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <AppContainer>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          Airbase Calendar
         </header>
-      </div>
+        <div>
+          <LoadableCalendar/>
+        </div>
+      </AppContainer>
     );
   }
 }

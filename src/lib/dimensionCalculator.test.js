@@ -29,7 +29,7 @@ describe('Dimension Calculator', () => {
       const hour      = '9';
       // There are 3 appointments in 9am to 10am slot
       expect(dayObject[hour]).to.not.equal(undefined)
-      expect(dayObject[hour].length).to.equal(2);
+      expect(dayObject[hour].appointments.length).to.equal(2);
     });
   });
 
@@ -47,12 +47,7 @@ describe('Dimension Calculator', () => {
     it('should set width of each appointment object', () => {
       const dayObject = DimensionCalculator.groupAppointmentByHour(appointments);
       DimensionCalculator.setWidthForEachNode(dayObject);
-      forEach(appointments, (appointment) => {
-        expect(typeof(appointment.width)).to.not.equal('undefined');
-      });
-      forEach(dayObject['9'], (appointment) => {
-        expect(appointment.width).to.be.equal(50);
-      });
+      expect(dayObject['9'].appointmentWidth).to.be.equal(50);
     });
   });
 
