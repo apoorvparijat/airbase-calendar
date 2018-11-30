@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { getEndHour, getStartHour } from "../../helpers/appointmentHelper";
 
 const AppointmentContainer = styled.div`
-  position  : 'absolute';
+  position: absolute;
   padding: 0.5em;
-  border: '1px solid #EEE';
+  border: 1px solid #EEE;
 `;
 
 class Appointment extends Component {
