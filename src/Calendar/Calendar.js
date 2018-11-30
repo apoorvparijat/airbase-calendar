@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { getDayObjectToPaint } from "../lib/dimensionCalculator";
-import HourRow from "./components/HourRow";
+import MinuteRow from "./components/MinuteRow";
 
 import * as calendarActions from '../actions/calendarActions';
 import { bindActionCreators } from "redux";
@@ -18,23 +18,23 @@ const CalendarContainer = styled.div`
 
 class Calendar extends Component {
 
-  appointmentPaintedHandler(hourKey, positionPainted, appointment) {
-    this.props.appointmentPainted(hourKey, positionPainted, appointment);
+  appointmentPaintedHandler(minuteKey, positionPainted, appointment) {
+    this.props.appointmentPainted(minuteKey, positionPainted, appointment);
   }
 
   renderHours(dayObject) {
-    const renderedHourRows = [];
-    for (let i = 9; i <= 21; i++) {
-      const hourKey = i + '';
-      if (dayObject[hourKey]) {
-        renderedHourRows.push(<HourRow key={i}
-                                       hourKey={hourKey}
-                                       hourObject={dayObject[hourKey]}
-                                       appointmentPaintedHandler={this.appointmentPaintedHandler.bind(this)}
+    const renderedMinuteRows = [];
+    for (let i = 540; i <= 1260; i++) {
+      const minuteKey = i + '';
+      if (dayObject[minuteKey]) {
+        renderedMinuteRows.push(<MinuteRow key={i}
+                                         minuteKey={minuteKey}
+                                         minuteObject={dayObject[minuteKey]}
+                                         appointmentPaintedHandler={this.appointmentPaintedHandler.bind(this)}
                                        />)
       }
     }
-    return renderedHourRows;
+    return renderedMinuteRows;
   }
 
   render() {

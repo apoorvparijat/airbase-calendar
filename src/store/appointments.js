@@ -4,11 +4,11 @@ export default [
   }, {
     startTime: 590, endTime: 800
   }, {
-    startTime: 600, endTime: 800
+    startTime: 600, endTime: 790
   }, {
-    startTime: 900, endTime: 930
+    startTime: 900, endTime: 900
   }, {
-    startTime: 750, endTime: 1040
+    startTime: 820, endTime: 1040
   }, {
     startTime: 1200, endTime: 1250
   }, {

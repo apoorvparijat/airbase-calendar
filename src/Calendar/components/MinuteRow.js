@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import range from 'lodash/range';
 import difference from 'lodash/difference';
 import Appointment from "./Appointment";
+import { getStartMinutes } from "../../helpers/appointmentHelper";
 
-class HourRow extends Component {
+class MinuteRow extends Component {
   constructor(props) {
     super(props);
-    this.appointments = this.props.hourObject.appointments || [];
+    this.appointments = this.props.minuteObject.appointments || [];
   }
 
   /**
@@ -32,19 +33,19 @@ class HourRow extends Component {
    * @returns {*}
    */
   renderAppointment(appointment) {
-    const { appointmentWidth } = this.props.hourObject;
+    const { appointmentWidth } = this.props.minuteObject;
 
-    // Don't paint if the appointment doesn't start in this hour
-    if (!this.isAppointmentStartingThisHour(appointment, this.props.hourKey)) {
+    // Don't paint if the appointment doesn't start in this minute
+    if (!this.isAppointmentStartingThisHour(appointment, this.props.minuteKey)) {
       return;
     }
 
     // Figure out which position/index to paint this appointment node at
-    const positionsPainted = this.props.hourObject.positionsPainted || [];
+    const positionsPainted = this.props.minuteObject.positionsPainted || [];
     const positionToPaint  = this.getPositionOpenToPaint(this.appointments.length, positionsPainted);
 
     // Call appointmentPainted handler
-    this.props.appointmentPaintedHandler(this.props.hourKey, positionToPaint, appointment);
+    this.props.appointmentPaintedHandler(this.props.minuteKey, positionToPaint, appointment);
 
     // Calculate height, weight and coordinates for this node to paint at.
     return (
@@ -65,15 +66,15 @@ class HourRow extends Component {
   }
 
   /**
-   * Returns whether an appointment belongs in the given hourKey
+   * Returns whether an appointment belongs in the given minuteKey
    * @param appointment
-   * @param hourKey
+   * @param minuteKey
    * @returns {boolean}
    */
-  isAppointmentStartingThisHour(appointment, hourKey) {
-    return (Math.floor(appointment.startTime / 60) + '') === hourKey
+  isAppointmentStartingThisHour(appointment, minuteKey) {
+    return (getStartMinutes(appointment) + '') === minuteKey
   }
 }
 
 
-export default HourRow;
+export default MinuteRow;

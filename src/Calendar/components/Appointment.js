@@ -14,10 +14,10 @@ class Appointment extends Component {
             width
           }           = this.props;
     const scaledWidth = (width / 100) * 600;
-    const startHour = getStartHour(appointment);
-    const startMin = appointment.startTime - 60 * startHour;
-    const endHour = getEndHour(appointment);
-    const endMin = appointment.endTime - 60 * endHour;
+    const startMinute = getStartHour(appointment);
+    const startMin = appointment.startTime - 60 * startMinute;
+    const endMinute = getEndHour(appointment);
+    const endMin = appointment.endTime - 60 * endMinute;
     return (
       <AppointmentContainer
         style={{
@@ -29,7 +29,7 @@ class Appointment extends Component {
           border: '1px solid #EEE'
         }}
       >
-        {startHour}:{startMin}-{endHour}:{endMin}
+        {startMinute}:{startMin}-{endMinute}:{endMin}
       </AppointmentContainer>
     );
   }
