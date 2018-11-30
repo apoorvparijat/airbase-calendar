@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { getEndHour, getStartHour } from "../../helpers/appointmentHelper";
 
 const AppointmentContainer = styled.div`
+  position  : 'absolute';
   padding: 0.5em;
+  border: '1px solid #EEE';
 `;
 
 class Appointment extends Component {
@@ -21,12 +23,10 @@ class Appointment extends Component {
     return (
       <AppointmentContainer
         style={{
-          position  : 'absolute',
           height    : appointment.height ,
           width     : scaledWidth,
           top       : appointment.startTime - 540,
           left      : scaledWidth * (positionToPaint - 1) + 10,
-          border: '1px solid #EEE'
         }}
       >
         {startMinute}:{startMin}-{endMinute}:{endMin}

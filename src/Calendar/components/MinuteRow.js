@@ -27,7 +27,7 @@ class MinuteRow extends Component {
   }
 
   /**
-   * Renders an appointment.
+   * Renders an appointment if it starts in this minute
    *
    * @param appointment
    * @returns {*}
