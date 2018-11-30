@@ -7,7 +7,7 @@ describe('Dimension Calculator', () => {
   beforeEach(() => {
     appointments = [
       {
-        startTime: 585, endTime: 675
+        startTime: 285, endTime: 675
       }, {
         startTime: 590, endTime: 800
       }, {
@@ -53,6 +53,6 @@ describe('Dimension Calculator', () => {
 
   describe('setHeightForEachNode()', () => {
 
-  })
+  });
 
 });

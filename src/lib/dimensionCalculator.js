@@ -1,8 +1,12 @@
 import forEach from 'lodash/forEach';
-import forOwn from 'lodash/forOwn';
+import range from 'lodash/range';
+import { getEndHour, getStartHour } from "../helpers/appointmentHelper";
 
-
-export function getDayObjectToPaint() {
+function getDayObjectToPaint(appointments) {
+  const dayObject = groupAppointmentByHour(appointments);
+  setWidthForEachNode(dayObject);
+  setHeightForEachNode(appointments);
+  return dayObject;
 }
 
 /**
@@ -14,16 +18,16 @@ export function getDayObjectToPaint() {
  */
 function groupAppointmentByHour(appointments) {
   const groupedAppointments = appointments.reduce((grouped, appointment) => {
-    const startHour = Math.floor(appointment.startTime / 60) + '';
-    const endHour = Math.floor(appointment.endTime / 60) + '';
-    if (!grouped[startHour]) {
-      grouped[startHour] = { appointments: [] }
-    }
-    if (!grouped[endHour]) {
-      grouped[endHour] = { appointments: []}
-    }
-    grouped[startHour].appointments.push(appointment);
-    grouped[endHour].appointments.push(appointment);
+    const startHour = Math.floor(appointment.startTime / 60);
+    const endHour = Math.floor(appointment.endTime / 60);
+    const hourRange = range(startHour, endHour + 1);
+    forEach(hourRange, (hour) => {
+      const hourKey = hour + '';
+      if (!grouped[hourKey]) {
+        grouped[hourKey] = { appointments: [] }
+      }
+      grouped[hourKey].appointments.push(appointment);
+    });
     return grouped;
   }, {});
   return groupedAppointments;
@@ -52,16 +56,34 @@ function setHeightForEachNode(appointments) {
 function setWidthForEachNode(dayObject) {
   const keys = Object.keys(dayObject);
   const sortedKeysBasedOnAppointments = keys.sort((a, b) => {
-    return dayObject[a].length - dayObject[b].length
+    return dayObject[b].appointments.length - dayObject[a].appointments.length
   });
+  // TODO: Refactor nested for-loops
   forEach(sortedKeysBasedOnAppointments, (slotHour, key) => {
+    let width;
     const appointmentsArray = dayObject[slotHour].appointments;
-    const width = Math.round(100 / appointmentsArray.length,);
+    if (dayObject[slotHour].appointmentWidth) {
+      width = dayObject[slotHour].appointmentWidth;
+    } else {
+      width = Math.round(100 / appointmentsArray.length,);
+    }
     dayObject[slotHour].appointmentWidth = width;
+    forEach(appointmentsArray, (appointment) => {
+      const startHour = getStartHour(appointment);
+      const endHour = getEndHour(appointment);
+      const hourRange = range(startHour, endHour + 1);
+      forEach(hourRange, (hour) => {
+        const hourKey = hour + '';
+        if (!dayObject[hourKey].appointmentWidth || (dayObject[hourKey].appointmentWidth > width)) {
+          dayObject[hourKey].appointmentWidth = width;
+        }
+      });
+    })
   });
 }
 
-module.exports = {
+export {
+  getDayObjectToPaint,
   groupAppointmentByHour,
   setHeightForEachNode,
   setWidthForEachNode
