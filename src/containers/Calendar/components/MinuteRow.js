@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import range from 'lodash/range';
 import difference from 'lodash/difference';
 import Appointment from "./Appointment";
-import { getStartMinutes } from "../../helpers/appointmentHelper";
+import { getStartMinutes } from "../../../helpers/appointmentHelper";
 
 class MinuteRow extends Component {
   constructor(props) {

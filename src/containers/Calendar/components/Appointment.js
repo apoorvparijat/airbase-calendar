@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { getEndHour, getStartHour } from "../../helpers/appointmentHelper";
+import { getEndHour, getStartHour } from "../../../helpers/appointmentHelper";
 
 const AppointmentContainer = styled.div`
   position: absolute;

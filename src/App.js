@@ -8,7 +8,7 @@ import './App.css';
 
 const LoadableCalendar = Loadable({
                                     loading: () => (<p>Loading...</p>),
-                                    loader : () => import('./Calendar/Calendar' /* webpackChunkName: "Calendar" */),
+                                    loader : () => import('./containers/Calendar/Calendar' /* webpackChunkName: "Calendar" */),
                                     render : (loaded, props) => {
                                       let Calendar = loaded.default;
                                       return <Calendar appointments={appointments}/>

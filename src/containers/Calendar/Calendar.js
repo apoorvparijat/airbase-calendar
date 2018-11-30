@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { getDayObjectToPaint } from "../lib/dimensionCalculator";
+import { getDayObjectToPaint } from "../../lib/dimensionCalculator";
 import MinuteRow from "./components/MinuteRow";
 
-import * as calendarActions from '../actions/calendarActions';
+import * as calendarActions from '../../actions/calendarActions';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
